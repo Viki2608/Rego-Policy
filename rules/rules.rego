@@ -1,7 +1,11 @@
-package example
+package authz
 
-default allow = false
+allow if {
+	input.path == ["users"]
+	input.method == "POST"
+}
 
-allow {
-  input.user == "admin"
+allow if {
+	input.path == ["users", input.user_id]
+	input.method == "GET"
 }

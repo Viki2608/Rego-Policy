@@ -1,4 +1,4 @@
-name: CI for Rego Policies
+name: CI for Rego rules
 
 on:
   push:
@@ -22,17 +22,17 @@ jobs:
 
       - name: Run OPA fmt (Check formatting)
         run: |
-          opa fmt --fail ./policies
+          opa fmt --fail ./rules
 
       - name: Run OPA lint
         run: |
-          opa check ./policies
+          opa check ./rules
 
       - name: Run OPA unit tests
         run: |
-          opa test ./policies
+          opa test ./rules
 
       - name: Optional - Upload test coverage (if needed)
         run: |
-          opa test ./policies --coverage --format=pretty > coverage.txt
+          opa test ./rules --coverage --format=pretty > coverage.txt
           cat coverage.txt
