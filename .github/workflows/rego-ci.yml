@@ -1,0 +1,38 @@
+name: CI for Rego Policies
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  rego-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up OPA CLI
+        uses: open-policy-agent/setup-opa@v2
+        with:
+          version: latest
+
+      - name: Run OPA fmt (Check formatting)
+        run: |
+          opa fmt --fail ./policies
+
+      - name: Run OPA lint
+        run: |
+          opa check ./policies
+
+      - name: Run OPA unit tests
+        run: |
+          opa test ./policies
+
+      - name: Optional - Upload test coverage (if needed)
+        run: |
+          opa test ./policies --coverage --format=pretty > coverage.txt
+          cat coverage.txt
